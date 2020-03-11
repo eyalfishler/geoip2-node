@@ -55,7 +55,7 @@
           ],
           "link_settings": {
             "libraries": [
-                "-L/app/.geoip/lib/","--llibmaxminddb.a"
+                "-L/app/.geoip/lib","-llibmaxminddb.a"
             ],
           },
 
