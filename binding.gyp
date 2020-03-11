@@ -55,7 +55,7 @@
           ],
           "link_settings": {
             "libraries": [
-              "libmaxminddb.a"
+              "./libmaxminddb.a"
             ],
           },
 
