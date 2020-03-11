@@ -53,6 +53,12 @@
           "sources": [
             "<!@(ls -1 ./src/*.cpp)",
           ],
+          "link_settings": {
+            "libraries": [
+                "/app/.geoip/lib/libmaxminddb.a",
+            ],
+          },
+
         }],
       ]
     },
