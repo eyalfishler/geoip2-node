@@ -1,0 +1,31 @@
+{
+  "name": "geoip2-node10",
+  "version": "1.0.7",
+  "description": "Maxmind GeoIP2 database reader for geolocating ip addresses.  Fast native implementation by wrapping libmaxminddb.",
+  "main": "./node-geoip2.js",
+  "author": "William Ross",
+  "license": "MIT",
+  "keywords": [
+    "geoip",
+    "geoip2",
+    "geolocation",
+    "maxmind",
+    "mmdb",
+    "maxminddb",
+    "ip"
+  ],
+  "scripts": {
+    "test": "./node_modules/.bin/mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/willrpss/geoip2-node10.git"
+  },
+  "dependencies": {
+    "nan": "^2.12.1"
+  },
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "mocha": "^5.2.0"
+  }
+}
