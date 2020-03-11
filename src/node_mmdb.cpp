@@ -24,7 +24,8 @@ static Local<Value> convertToV8Helper(MMDB_entry_data_list_s **entry_data_list) 
                     (*entry_data_list)->entry_data.data_size);
 
                 *entry_data_list = (*entry_data_list)->next;
-                object->Set(Nan::New(key).ToLocalChecked(), convertToV8Helper(entry_data_list));
+                v8::Local<v8::Context> context = object->CreationContext();
+                object->Set(context,Nan::New(key).ToLocalChecked(), convertToV8Helper(entry_data_list));
             }
             return object;
         }
@@ -33,10 +34,10 @@ static Local<Value> convertToV8Helper(MMDB_entry_data_list_s **entry_data_list) 
             uint32_t size = (*entry_data_list)->entry_data.data_size;
 
             Local<Array> array = Nan::New<Array>(size);
-
+            v8::Local<v8::Context> context = array->CreationContext();
             int i = 0;
             for (*entry_data_list = (*entry_data_list)->next; size && *entry_data_list; size--) {
-                array->Set(i++, convertToV8Helper(entry_data_list));
+                array->Set(context,i++, convertToV8Helper(entry_data_list));
             }
 
             return array;
@@ -266,18 +267,26 @@ void NodeMMDBWorker::Destroy() {
     MMDB_free_entry_data_list(resultList);
     Nan::AsyncWorker::Destroy();
 }
+//extern "C" {
+//static void init(Handle<Object> exports) {
 
-static void init(Handle<Object> exports) {
+static void init(v8::Local<v8::Object> exports, v8::Local<v8::Object> module) {
+    Nan::HandleScope scope;
 
      /** MMDB **/
-    Handle<FunctionTemplate> mmdbTpl =  Nan::New<FunctionTemplate>(NodeMMDB::New);
+    //Handle<FunctionTemplate> mmdbTpl =  Nan::New<FunctionTemplate>(NodeMMDB::New);
+    v8:Local<FunctionTemplate> mmdbTpl =  Nan::New<FunctionTemplate>(NodeMMDB::New);
     mmdbTpl->SetClassName(Nan::New("MMDB").ToLocalChecked());
     mmdbTpl->InstanceTemplate()->SetInternalFieldCount(1);
 
     Nan::SetPrototypeMethod(mmdbTpl, "lookup",     NodeMMDB::Lookup);
     Nan::SetPrototypeMethod(mmdbTpl, "lookupSync", NodeMMDB::LookupSync);
 
-    exports->Set(Nan::New("MMDB").ToLocalChecked(), mmdbTpl->GetFunction());
+     v8::Local<v8::Context> context = exports->CreationContext();
+
+    exports->Set(context,Nan::New("MMDB").ToLocalChecked(), mmdbTpl->GetFunction(context).ToLocalChecked());
 }
 
 NODE_MODULE(node_mmdb, init)
+//}
+
