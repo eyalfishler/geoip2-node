@@ -49,15 +49,21 @@
             ],
           },
         }],
-        [ 'OS!="win"', {
+        [ 'OS!="mac"', {
           "sources": [
             "<!@(ls -1 ./src/*.cpp)",
           ],
+
           "link_settings": {
             "libraries": [
               "../../../.geoip/lib/libmaxminddb.a"
             ],
           },
+        }],
+        [ 'OS=="mac"', {
+          "sources": [
+            "<!@(ls -1 ./src/*.cpp)",
+          ],
 
         }],
       ]
